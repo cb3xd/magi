@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TypedDict
+from typing import Literal, TypedDict
 
 
 class MagiState(str, Enum):
@@ -8,5 +8,5 @@ class MagiState(str, Enum):
 
 
 class Message(TypedDict):
-    role: str
+    role: Literal['system', 'user', 'assistant']
     content: str
