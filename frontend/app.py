@@ -5,46 +5,10 @@ from textual.containers import Horizontal
 from rich.panel import Panel
 from rich.text import Text
 from frontend import MagiNode
-
-# --- NERV Color Palette ---
-CYAN = '#00f5d4'
-AMBER = '#ff9100'
-RED = '#ff003c'
-DIM_CYAN = '#004d43'
+from frontend.styles import DIM_CYAN, RED, CYAN, AMBER
 
 
 class MagiApp(App):
-    CSS = f"""
-    Screen {{
-        layout: vertical;
-        background: #000000;
-        padding: 1;
-    }}
-    #header {{
-        height: 5;
-        dock: top;
-        margin-bottom: 1;
-    }}
-    #node-container {{
-        layout: horizontal;
-        height: 1fr;
-    }}
-    MagiNode {{
-        width: 1fr;
-        height: 100%;
-        margin: 0 1;
-    }}
-    Input {{
-        dock: bottom;
-        border: tall {AMBER};
-        background: #000000;
-        color: {CYAN};
-    }}
-    Input:focus {{
-        border: tall {CYAN};
-    }}
-    """
-
     def compose(self) -> ComposeResult:
         header_text = Text.assemble(
             ('DIRECT LINK CONNECTION: MAGI 01\n', f'bold {AMBER}'),
