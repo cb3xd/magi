@@ -3,9 +3,8 @@ AMBER = '#ff9100'
 RED = '#ff003c'
 DIM_CYAN = '#004d43'
 
-COLORS = {'cyan': CYAN, 'amber': AMBER, 'red': RED, 'dim_cyan': DIM_CYAN}
 
-CSS = f"""
+CD_CSS = f"""
     Screen {{
         layout: vertical;
         background: #000000;
@@ -27,11 +26,12 @@ CSS = f"""
     }}
     Input {{
         dock: bottom;
-        border: tall {AMBER};
+        border: round {AMBER};
         background: #000000;
         color: {CYAN};
     }}
     Input:focus {{
-        border: tall {CYAN};
+        border: round {CYAN};
     }}
+
     """

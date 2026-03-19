@@ -3,25 +3,22 @@ from textual.reactive import reactive
 from rich.panel import Panel
 from rich.text import Text
 from rich.align import Align
+from backend import MagiState
 
 
 class MagiNode(Static):
     status = reactive('OFFLINE')
     color = reactive('white')
 
-    def __init__(self, name: str, code: str = '258', **kwargs):
+    def __init__(self, name: str, code: str, **kwargs):
         super().__init__(**kwargs)
         self.node_name = name
         self.code = code
 
     def render(self) -> Panel:
-        kanji = (
-            ' 承認 '
-            if self.status == 'ONLINE'
-            else (' 拒絶 ' if self.status == 'REJECT' else ' 待機 ')
-        )
-        if self.status == 'OFFLINE':
-            kanji = ' ---- '
+        kanji = ' 遊休 '
+        if self.status == MagiState.THINKING:
+            kanji = ' 思索 '
 
         content = Text.assemble(
             (f'\n{self.node_name}\n', f'bold {self.color}'),
