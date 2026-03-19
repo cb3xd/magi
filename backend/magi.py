@@ -1,6 +1,6 @@
-from typing import List, Literal, cast
+from enum import Enum
+from typing import Dict, List, Literal, cast
 from pathlib import Path
-
 from groq.types.chat import ChatCompletionMessageParam
 from backend.models import Message, MagiState
 from groq import Groq
@@ -8,13 +8,25 @@ from dotenv import load_dotenv
 import os
 
 
-class MagiUnit:
-    def __init__(self, name: str, model: str, base_prompt: str):
+class MagiUnit(Enum):
+    Melchior = (
+        'qwen/qwen3-32b',
+        (Path('prompts') / 'Melchior.txt').read_text(encoding='utf-8'),
+    )
+    Balthasar = (
+        'qwen/qwen3-32b',
+        (Path('prompts') / 'Balthasar.txt').read_text(encoding='utf-8'),
+    )
+    Casper = (
+        'qwen/qwen3-32b',
+        (Path('prompts') / 'Casper.txt').read_text(encoding='utf-8'),
+    )
+
+    def __init__(self, model: str, base_prompt: str):
         load_dotenv()
         api_key = os.getenv('API_KEY')
         print(api_key)
         self.client = Groq(api_key=api_key)
-        self.name = name
         self.model = model
         self.messages: List[Message] = []
         self.add_message('system', base_prompt)
@@ -47,11 +59,9 @@ class MagiUnit:
 
 
 class Magi:
-    def __init__(self):
-        unit_names = ['Melchior', 'Casper', 'Balthasar']
-        self.units = {}
-        for unit_name in unit_names:
-            prompt_path = Path('prompts') / f'{unit_name}.txt'
-            prompt = prompt_path.read_text(encoding='utf-8')
-            magi_unit = MagiUnit(unit_name, 'qwen/qwen3-32b', prompt)
-            self.units[unit_name] = magi_unit
+    def ask(self, prompt: str):
+        for unit in MagiUnit:
+            print(f'[{unit.name}]')
+            unit.add_message('user', prompt)
+            unit.send_messages()
+            print(f'[{unit.name}]')
